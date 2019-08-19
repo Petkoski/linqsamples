@@ -23,6 +23,13 @@ namespace Introduction
          * Gives us strongly typed compile-time checks on queries that can execute against 
          * in-memory data, relational data, and XML data (objects, MongoDB, CSV files, file system, 
          * SQL db, HL7 XML, JSON)
+         * 
+         * Course overview:
+         * 1. C# features for LINQ
+         * 2. Basic queries
+         * 3. Filtering, sorting, projecting
+         * 4. Grouping, joining, aggregating
+         * 5. Working with XML, SQL DB
          */
 
         static void Main(string[] args)
@@ -46,6 +53,7 @@ namespace Introduction
                 Console.WriteLine($"{file.Name,-30} : {file.Length,10:N0}");
             }
 
+            Console.WriteLine("***");
 
             //Technique 2:
             //Using a series of method calls (slightly different syntax)
