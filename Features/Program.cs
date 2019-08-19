@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Features.Linq;
+//using Features.Linq; //Adding the namespace where the extension method lives (our method, LINQ has Count() method too)
 
 namespace Features
 {
@@ -60,6 +60,7 @@ namespace Features
             {
                 Console.WriteLine(enumerator.Current.Name);
             }
+            Console.WriteLine(developers.Count());
 
             //var query = developers.Where(e => e.Name.Length == 5)
             //                      .OrderByDescending(e => e.Name)
