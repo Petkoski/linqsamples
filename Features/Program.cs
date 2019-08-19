@@ -5,11 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 //using Features.Linq; //Adding the namespace where the extension method lives (our method, LINQ has Count() method too)
 
-
 /**
  * IEnumerable<string> filteredList = cities.Where(StartsWithL) //Named method
  * IEnumerable<string> filteredList = cities.Where(delegate(string s) { return s.StartsWith("L"); }); //Anonymous method
  * IEnumerable<string> filteredList = cities.Where(s => s.StartsWith("L")); //Lambda expression
+ */
+
+/**
+ * Implicit typing
+ * var name = "Scott";
+ * 'var' keyword introduced to C# at the same time as LINQ. It does work with queries easier in many
+ * scenarios. Var allows the compiler to INFER the type of the variable (without explicitly specifying it).
+ * Variable is still strongly typed (can't assign integer to the variable 'name').
+ * When using this implicit typing, you must initialize the variable. You can't initialize to null.
  */
 namespace Features
 {
@@ -50,7 +58,7 @@ namespace Features
                 new Employee { Id = 1, Name = "Scott" },
                 new Employee { Id = 2, Name = "Chris" }
             };
-             
+
             var sales = new List<Employee>()
             {
                 new Employee { Id = 3, Name = "Alex" }
@@ -96,26 +104,38 @@ namespace Features
             //3. Lambda expression:
             //Just another way of creating executable code
             //foreach (var employee in developers.Where(e => e.Name.StartsWith("S")))
-            foreach (var employee in developers
-                .Where(e => e.Name.Length == 5)
-                .OrderBy(e => e.Name))
-            {
-                Console.WriteLine(employee.Name);
-            }
-
-            //var query = developers.Where(e => e.Name.Length == 5)
-            //                      .OrderByDescending(e => e.Name)
-            //                      .Select(e => e);
-
-            //var query2 = from developer in developers
-            //             where developer.Name.Length == 5
-            //             orderby developer.Name descending
-            //             select developer;
-
-            //foreach (var employee in query2)
+            //foreach (var employee in developers
+            //    .Where(e => e.Name.Length == 5)
+            //    .OrderBy(e => e.Name))
             //{
             //    Console.WriteLine(employee.Name);
             //}
+
+            //Method syntax approach
+            //var query = developers.Where(e => e.Name.Length == 5)
+            //                      .OrderBy(e => e.Name);
+
+            //Query syntax approach
+            //Query syntax ALWAYS starts with the 'from' keywoard. Think of it as a for..each loop 
+            //("for each developer in developers")
+            //Query ends with 'select' (to tell the compiler what shape the result looks like) or 
+            //'group' (to group the result).
+            //The reason the C# language designers use this approach ('select' appearing at the end)
+            //is because when we first specify where the data is coming from, then VS & C# compiler
+            //know what might data looks like. And we can have IntelliSense help in the rest of the
+            //query.
+            //Not every LINQ operator is available in this query syntax, sometimes we must use
+            //the method syntax.
+
+            var query2 = from developer in developers
+                         where developer.Name.Length == 5
+                         orderby developer.Name
+                         select developer;
+
+            foreach (var employee in query2)
+            {
+                Console.WriteLine(employee.Name);
+            }
 
             Console.Read();
         }
