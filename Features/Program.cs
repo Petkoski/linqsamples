@@ -17,15 +17,27 @@ namespace Features
     {
         static void Main(string[] args)
         {
-            //Func<int, int> square = x => x * x;
-            //Func<int, int, int> add = (x, y) =>
-            //{
-            //    int temp = x + y;
-            //    return temp;
-            //};
-            //Action<int> write =  x => Console.WriteLine(x);
+            /**
+             * Func type was introduced as an easy way to work with delegates (types that allow
+             * creating variables that point to methods).
+             * Func<int, string>
+             * Last generic type (string in the above case) param describes the RETURN type of a method.
+             * Func<int, int> f = Square;
+             */
 
-            //write(square(add(3, 5)));
+            //Creating a method that can square a number
+            Func<int, int> square = x => x * x;
+
+            Func<int, int, int> add = (x, y) =>
+            {
+                int temp = x + y;
+                return temp;
+            };
+
+            //Other delegate type is Action (always returns void):
+            Action<int> write = x => Console.WriteLine(x); //Accepts int as input, returns void.
+
+            write(square(add(3, 5)));
 
             //var developers = new Employee[]
             //{
@@ -82,7 +94,11 @@ namespace Features
             //)
 
             //3. Lambda expression:
-            foreach (var employee in developers.Where(e => e.Name.StartsWith("S")))
+            //Just another way of creating executable code
+            //foreach (var employee in developers.Where(e => e.Name.StartsWith("S")))
+            foreach (var employee in developers
+                .Where(e => e.Name.Length == 5)
+                .OrderBy(e => e.Name))
             {
                 Console.WriteLine(employee.Name);
             }
@@ -102,6 +118,11 @@ namespace Features
             //}
 
             Console.Read();
+        }
+
+        private static int Square(int arg)
+        {
+            throw new NotImplementedException();
         }
 
         //In case of using named method for filtering
