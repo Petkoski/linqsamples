@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 //using Features.Linq; //Adding the namespace where the extension method lives (our method, LINQ has Count() method too)
 
+
+/**
+ * IEnumerable<string> filteredList = cities.Where(StartsWithL) //Named method
+ * IEnumerable<string> filteredList = cities.Where(delegate(string s) { return s.StartsWith("L"); }); //Anonymous method
+ * IEnumerable<string> filteredList = cities.Where(s => s.StartsWith("L")); //Lambda expression
+ */
 namespace Features
 {
     class Program
@@ -62,6 +68,25 @@ namespace Features
             }
             Console.WriteLine(developers.Count());
 
+            Console.WriteLine("***");
+
+            //1. Named method:
+            //foreach (var employee in developers.Where(NameStartsWithS))
+
+            //2. Anonymous method:
+            //foreach (var employee in developers.Where(
+            //    delegate(Employee employee)
+            //    {
+            //        return employee.Name.StartsWith("S");
+            //    })
+            //)
+
+            //3. Lambda expression:
+            foreach (var employee in developers.Where(e => e.Name.StartsWith("S")))
+            {
+                Console.WriteLine(employee.Name);
+            }
+
             //var query = developers.Where(e => e.Name.Length == 5)
             //                      .OrderByDescending(e => e.Name)
             //                      .Select(e => e);
@@ -79,6 +104,7 @@ namespace Features
             Console.Read();
         }
 
+        //In case of using named method for filtering
         private static bool NameStartsWithS(Employee employee)
         {
             return employee.Name.StartsWith("S");
