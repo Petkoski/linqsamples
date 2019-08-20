@@ -9,25 +9,38 @@ namespace Queries
     public static class MyLinq
     {          
         
-        public static IEnumerable<double> Random()
+        //public static IEnumerable<double> Random()
+        //{
+        //    var random = new Random();
+        //    while (true)
+        //    {
+        //        yield return random.NextDouble();
+        //    }
+        //}
+        
+        //Creating our custom Filter operator (similar to LINQ's Where)
+        public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate) //Basic structure of most LINQ operators
         {
-            var random = new Random();
-            while (true)
-            {
-                yield return random.NextDouble();
-            }
-        }
-                    
-        public static IEnumerable<T> Filter<T>(this IEnumerable<T> source,
-                                               Func<T, bool> predicate)
-        {
+            //foreach (var item in source)
+            //{
+            //    if (predicate(item))
+            //    {
+            //        yield return item;
+            //    }
+            //}
+
+            //One possible implementation. This is NOT the way LINQ actually implements the Where operator
+            var result = new List<T>();
+
             foreach (var item in source)
             {
-                if (predicate(item))
+                if(predicate(item))
                 {
-                    yield return item;
+                    result.Add(item);
                 }
             }
+
+            return result;
         }
     }
 }
