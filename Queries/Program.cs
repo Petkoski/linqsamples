@@ -8,12 +8,6 @@ namespace Queries
     {
         static void Main(string[] args)
         {
-            //var numbers = MyLinq.Random().Where(n => n > 0.5).Take(10).OrderBy(n => n);
-            //foreach (var number in numbers)
-            //{
-            //    Console.WriteLine(number);
-            //}
-
             var movies = new List<Movie>
             {
                 new Movie { Title = "The Dark Knight",   Rating = 8.9f, Year = 2008 },
@@ -51,7 +45,7 @@ namespace Queries
             //A streaming operator (like Where()) only needs to read through a source of data up until the
             //point it produces a result. At that point it will yield the result and execution can jump
             //out of the Where() method and we can process that single item.
-
+             
             //OrderByDescending still offers deferred execution, but once it starts to execute, it needs to
             //go through the ENTIRE incoming sequence of items. That means when we first call to MoveNext()
             //to get the first item out of the query, OrderByDescending() has to look at everything to
@@ -62,6 +56,17 @@ namespace Queries
             //why it makes sense to filter before ordering (highly improves the performance of a query 
             //that operates against in-memory data).
             var query = movies.Where(m => m.Year > 2000).OrderByDescending(m => m.Rating);
+
+            //Querying infinity (CH04-09)
+            //Classification of standard query pperators by manner of execution
+            //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/classification-of-standard-query-operators-by-manner-of-execution
+
+            //Take(10) to avoid the infinite loop in MyLinq.Random()
+            var numbers = MyLinq.Random().Where(n => n > 0.5).Take(10).OrderBy(n => n);
+            foreach (var number in numbers)
+            {
+                Console.WriteLine(number);
+            }
 
             //Console.WriteLine(query.Count()); //Forces the query to execute immediately, so that the Count() operator can loop through the results
             var enumerator = query.GetEnumerator();

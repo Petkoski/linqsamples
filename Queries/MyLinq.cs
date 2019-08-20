@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 namespace Queries
 {
     public static class MyLinq
-    {          
-        
-        //public static IEnumerable<double> Random()
-        //{
-        //    var random = new Random();
-        //    while (true)
-        //    {
-        //        yield return random.NextDouble();
-        //    }
-        //}
-        
+    {
+        public static IEnumerable<double> Random()
+        {
+            var random = new Random();
+            while (true)
+            {
+                yield return random.NextDouble();
+            }
+        }
+
         //Creating our custom Filter operator (similar to LINQ's Where)
         public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate) //Basic structure of most LINQ operators
         {
