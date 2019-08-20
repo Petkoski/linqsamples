@@ -46,11 +46,15 @@ namespace Queries
                     //of work it can get away with.
                     //Query does NO real work until we force the query to produce a result (with for..each
                     //statement). The line of code ('var query = movies.Filter(m => m.Year > 2000);') is
-                    //just defining a query that knows what to do some time in the future. The filtering
+                    //just DEFINING a query that knows what to do some time in the FUTURE. The filtering
                     //operation does not execute until we try to see the results of the query (we do that
                     //with for..each statement). What else would force a query to execute? Ultimately, any
                     //operation that inspects the results will force the query to execute (ex.: if we serialize
                     //the query results to JSON/XML, if we databind the results into a grid control).
+
+                    //How do you know which operators behave this way? Simple way is to check the MSDN
+                    //documentation: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where
+                    //Under 'Remarks': "This method is implemented by using deferred execution."
 
                     //How it works:
                     //Execution will start inside this Filter method ONLY when we try to pull something out
