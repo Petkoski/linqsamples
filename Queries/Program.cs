@@ -29,9 +29,8 @@ namespace Queries
             //and materialize it into a CONCRETE RESULT (ToArray, ToList, ToDictionary).
             //var query = movies.Filter(m => m.Year > 2000).ToList();
 
-            var query = Enumerable.Empty<Movie>();
-
             //Exceptions and deferred queries (CH04-07)
+            var query = Enumerable.Empty<Movie>();
             try
             {
                 query = movies.Filter(m => m.Year > 2000); //Without .ToList(), we are just defining the query here. The exception is thrown in the Count() below.
