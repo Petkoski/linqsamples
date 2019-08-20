@@ -41,7 +41,16 @@ namespace Queries
                 if (predicate(item))
                 {
                     yield return item; //Helps us BUILD an IEnumerable<T>
-                    //Gives us the behavior known as DEFERRED execution 
+                    //Gives us the behavior known as DEFERRED execution (many LINQ operators are implemented like this)
+                    //Deferred is a fancy term meaning LINQ is as LAZY as possible, it does the least amount
+                    //of work it can get away with.
+                    //Query does NO real work until we force the query to produce a result (with for..each
+                    //statement). The line of code ('var query = movies.Filter(m => m.Year > 2000);') is
+                    //just defining a query that knows what to do some time in the future. The filtering
+                    //operation does not execute until we try to see the results of the query (we do that
+                    //with for..each statement). What else would force a query to execute? Ultimately, any
+                    //operation that inspects the results will force the query to execute (ex.: if we serialize
+                    //the query results to JSON/XML, if we databind the results into a grid control).
 
                     //How it works:
                     //Execution will start inside this Filter method ONLY when we try to pull something out
