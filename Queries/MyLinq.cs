@@ -17,7 +17,7 @@ namespace Queries
             }
         }
 
-        //Creating our custom Filter operator (similar to LINQ's Where)
+        //Creating a custom Filter operator, similar to LINQ's Where (CH04-02)
         public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate) //Basic structure of most LINQ operators
         {
             //One possible implementation. This is NOT the way LINQ actually implements the Where operator
@@ -34,12 +34,14 @@ namespace Queries
             //return result;
 
 
+            //Creating an operator with 'yield return' (CH04-03)
             //Making our custom Filter operator to behave same as the LINQ's Where
             foreach (var item in source)
             {
                 if (predicate(item))
                 {
                     yield return item; //Helps us BUILD an IEnumerable<T>
+                    //Deferred execution explained (CH04-04)
                     //Gives us the behavior known as DEFERRED execution (many LINQ operators are implemented like this)
                     //Deferred is a fancy term meaning LINQ is as LAZY as possible, it does the least amount
                     //of work it can get away with.

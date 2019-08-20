@@ -17,11 +17,16 @@ namespace Queries
             };
 
             //var query = movies.Where(m => m.Year > 2000);
+
+            //Taking advantage of deferred execution (CH04-05)
             //var query = movies.Filter(m => m.Year > 2000);
 
+
+            //Avoiding pitfalls of deferred execution (CH04-06)
             //Turn off deferred execution and do something that immediately executes that query
             //and materialize it into a CONCRETE RESULT (ToArray, ToList, ToDictionary).
             //var query = movies.Filter(m => m.Year > 2000).ToList();
+
 
             //Exceptions and deferred queries (CH04-07)
             //var query = Enumerable.Empty<Movie>();
@@ -40,12 +45,13 @@ namespace Queries
             //    Console.WriteLine(movie.Title);
             //}
 
+
             //All about streaming operators (CH04-08)
             //Operators that offer deferred execution can either be streaming or non-streaming operators.
             //A streaming operator (like Where()) only needs to read through a source of data up until the
             //point it produces a result. At that point it will yield the result and execution can jump
             //out of the Where() method and we can process that single item.
-             
+
             //OrderByDescending still offers deferred execution, but once it starts to execute, it needs to
             //go through the ENTIRE incoming sequence of items. That means when we first call to MoveNext()
             //to get the first item out of the query, OrderByDescending() has to look at everything to
@@ -56,6 +62,7 @@ namespace Queries
             //why it makes sense to filter before ordering (highly improves the performance of a query 
             //that operates against in-memory data).
             var query = movies.Where(m => m.Year > 2000).OrderByDescending(m => m.Rating);
+
 
             //Querying infinity (CH04-09)
             //Classification of standard query pperators by manner of execution
