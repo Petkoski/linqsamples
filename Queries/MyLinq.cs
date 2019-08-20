@@ -21,26 +21,43 @@ namespace Queries
         //Creating our custom Filter operator (similar to LINQ's Where)
         public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate) //Basic structure of most LINQ operators
         {
+            //One possible implementation. This is NOT the way LINQ actually implements the Where operator
+            //var result = new List<T>();
+
             //foreach (var item in source)
             //{
-            //    if (predicate(item))
+            //    if(predicate(item))
             //    {
-            //        yield return item;
+            //        result.Add(item);
             //    }
             //}
 
-            //One possible implementation. This is NOT the way LINQ actually implements the Where operator
-            var result = new List<T>();
+            //return result;
 
+
+            //Making our custom Filter operator to behave same as the LINQ's Where
             foreach (var item in source)
             {
-                if(predicate(item))
+                if (predicate(item))
                 {
-                    result.Add(item);
+                    yield return item; //Helps us BUILD an IEnumerable<T>
+                    //Gives us the behavior known as DEFERRED execution 
+
+                    //How it works:
+                    //Execution will start inside this Filter method ONLY when we try to pull something out
+                    //of the IEnumerable. Execution will then begin and continue UNTIL we hit the first
+                    //'yield' statement. At that point, 'yield return item' yields control back to the caller,
+                    //returning an item. The caller can then manipulate that item and when it goes to make the
+                    //next iteration and get the next thing out of the IEnumerable, execution will PICK UP
+                    //AND RESUME at the point we jumped out of this Filter method.
+
+                    //The example with movies:
+                    //We jumped into the Filter method, it executed a predicate against "The Dark Knight" movie,
+                    //saw that the year is 2008, yielded that movie BACK to the caller, who can then
+                    //Console.Writeln that movie, and then continue through the enumerator to the next thing
+                    //in the sequence.
                 }
             }
-
-            return result;
         }
     }
 }
