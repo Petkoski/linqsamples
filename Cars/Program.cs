@@ -56,19 +56,50 @@ namespace Cars
 
             //ThenBy() & ThenByDescending() - used for secondary sort
             //Tertiary sort is possible by adding another ThenBy() / ThenByDescending()
-            //var query = cars.OrderByDescending(c => c.Combined)
-            //                .ThenBy(c => c.Name); //Secondary sort
+            var query = cars.Where(c => c.Manufacturer == "BMW" && c.Year == 2016)
+                            .OrderByDescending(c => c.Combined)
+                            .ThenBy(c => c.Name); //Secondary sort
+
+            var queryTop = cars.Where(c => c.Manufacturer == "BMW" && c.Year == 2016)
+                            .OrderByDescending(c => c.Combined)
+                            .ThenBy(c => c.Name)
+                            .First(); //Returns a single car
+
+            var queryTop2 = cars
+                            .OrderByDescending(c => c.Combined)
+                            .ThenBy(c => c.Name)
+                            .First(c => c.Manufacturer == "BMW" && c.Year == 2016); //Returns a single car
+
+            //queryTop is more efficient because it first filters, then sorts
+
+            //First has 2 overloads:
+            //First()
+            //First(takes Func<Car, bool> as param) - gives first result where condition is true
+            //There is also Last() operator (also has 2 overloads)
+
+            //Both First() and Last() have an alternate version:
+            //First - throws an exception if it cannot produce an item (ex. sequence contains no matching element)
+            //FirstOrDefault - returns a default value if it cannot produce an item (default value for a Car variable is - null, for integer - 0)
+
+            Console.WriteLine(queryTop.Name);
+            Console.WriteLine(queryTop2.Name);
 
             //Query syntax
-            var query = from car in cars
+            var query2 = from car in cars
+                        where car.Manufacturer == "BMW" && car.Year == 2016
                         orderby car.Combined descending, car.Name ascending
                         select car; //Identity projection (for every car, select that car [without trying to transform it])
+
+            var query2Top = (from car in cars
+                         where car.Manufacturer == "BMW" && car.Year == 2016
+                         orderby car.Combined descending, car.Name ascending
+                         select car).First();
 
             //Reverse() operator - reverses the order of the items
 
             foreach (var car in query.Take(10))
             {
-                Console.WriteLine($"{car.Name} : {car.Combined}");
+                Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
             }
 
             //if (!db.Cars.Any())
