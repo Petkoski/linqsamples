@@ -111,15 +111,19 @@ namespace Cars
 
         private static List<Car> ProcessCars(string path)
         {
-            var query = File.ReadAllLines(path) //Returns string[]
-                    .Skip(1) //Paging operation - avoid processing the header line (that contains the column names)
-                    .Where(line => line.Length > 1) //Line must have some length
-                    .Select(Car.ParseFromCsv);
-                    //.ToCar();
-
             //Skip() and Take() are useful when doing paging operations.
             //Skip - skips the first n items
             //Take - takes n items
+
+            //var query = File.ReadAllLines(path) //Returns string[]
+            //        .Skip(1) //Paging operation - avoid processing the header line (that contains the column names)
+            //        .Where(line => line.Length > 1) //Line must have some length
+            //        .Select(Car.ParseFromCsv);
+            //        //.ToCar();
+
+            var query = from line in File.ReadAllLines(path).Skip(1)
+                        where line.Length > 1
+                        select Car.ParseFromCsv(line);
 
             return query.ToList();
         }
