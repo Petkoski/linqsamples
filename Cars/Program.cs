@@ -16,7 +16,9 @@ namespace Cars
         {
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CarDb>());
             InsertData();
-            QueryData();
+            //QueryData();
+
+            Console.Read();
         }
 
         private static void QueryData()
@@ -50,16 +52,21 @@ namespace Cars
         private static void InsertData()
         {
             var cars = ProcessCars("fuel.csv");
-            var db = new CarDb();           
+            var db = new CarDb();
 
-            if (!db.Cars.Any())
+            foreach (var car in cars)
             {
-                foreach (var car in cars)
-                {
-                    db.Cars.Add(car);
-                }
-                db.SaveChanges();
+                Console.WriteLine(car.Name);
             }
+
+            //if (!db.Cars.Any())
+            //{
+            //    foreach (var car in cars)
+            //    {
+            //        db.Cars.Add(car);
+            //    }
+            //    db.SaveChanges();
+            //}
         }
 
         private static void QueryXml()
@@ -104,12 +111,15 @@ namespace Cars
 
         private static List<Car> ProcessCars(string path)
         {
-            var query =
+            var query = File.ReadAllLines(path) //Returns string[]
+                    .Skip(1) //Paging operation - avoid processing the header line (that contains the column names)
+                    .Where(line => line.Length > 1) //Line must have some length
+                    .Select(Car.ParseFromCsv);
+                    //.ToCar();
 
-                File.ReadAllLines(path)
-                    .Skip(1)
-                    .Where(l => l.Length > 1)
-                    .ToCar();
+            //Skip() and Take() are useful when doing paging operations.
+            //Skip - skips the first n items
+            //Take - takes n items
 
             return query.ToList();
         }
