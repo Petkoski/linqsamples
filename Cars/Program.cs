@@ -97,6 +97,18 @@ namespace Cars
 
             //Reverse() operator - reverses the order of the items
 
+            //CH05-07
+            //Quantifiers (can tell us if anything matches a predicate, or if the data set just contains a specific item)
+            //All of these operators return true/false, they do not offer deferred execution
+
+            var quan1 = cars.Any(); //Is there anything in this data set?
+            var quan2 = cars.Any(c => c.Manufacturer == "Ford"); //Is there any car from "Ford" manufacturer?
+            var quan3 = cars.All(c => c.Manufacturer == "Ford"); //Do all of the cars have a manufacturer of "Ford"?
+            //var quan4 = cars.Contains() //Check if an item is in collection
+            Console.WriteLine(quan1); //True
+            Console.WriteLine(quan2); //True
+            Console.WriteLine(quan3); //False
+
             foreach (var car in query.Take(10))
             {
                 Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
