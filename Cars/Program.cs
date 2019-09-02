@@ -52,11 +52,16 @@ namespace Cars
         private static void InsertData()
         {
             var cars = ProcessCars("fuel.csv");
-            var db = new CarDb();
+            //var db = new CarDb();
 
-            foreach (var car in cars)
+            //ThenBy() & ThenByDescending() - used for secondary sort
+            //Tertiary sort is possible by adding another ThenBy() / ThenByDescending()
+            var query = cars.OrderByDescending(c => c.Combined)
+                            .ThenBy(c => c.Name); //Secondary sort
+
+            foreach (var car in query.Take(10))
             {
-                Console.WriteLine(car.Name);
+                Console.WriteLine($"{car.Name} : {car.Combined}");
             }
 
             //if (!db.Cars.Any())
