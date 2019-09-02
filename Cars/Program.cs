@@ -56,8 +56,15 @@ namespace Cars
 
             //ThenBy() & ThenByDescending() - used for secondary sort
             //Tertiary sort is possible by adding another ThenBy() / ThenByDescending()
-            var query = cars.OrderByDescending(c => c.Combined)
-                            .ThenBy(c => c.Name); //Secondary sort
+            //var query = cars.OrderByDescending(c => c.Combined)
+            //                .ThenBy(c => c.Name); //Secondary sort
+
+            //Query syntax
+            var query = from car in cars
+                        orderby car.Combined descending, car.Name ascending
+                        select car; //Identity projection (for every car, select that car [without trying to transform it])
+
+            //Reverse() operator - reverses the order of the items
 
             foreach (var car in query.Take(10))
             {
