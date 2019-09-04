@@ -133,10 +133,31 @@ namespace Cars
                          };
 
 
-            foreach (var car in query4.Take(10))
+            //CH05-09 Flattening operator SelectMany
+            //SelectMany can transform (flattens) a collection of collections into a single collection
+            var result = cars.Select(c => c.Name);
+
+            var result2 = cars.SelectMany(c => c.Name); //Will drill in the item we are selecting, iterate that item, and yield return each thing INSIDE of it (Name is a string, inside of a string is a CHAR)
+            //Now what we are getting back as a result2 is NOT IEnumerable of names, but IEnumerable of chars (that each name has been build from)
+
+            foreach (var character in result2)
             {
-                Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
+                Console.WriteLine(character);
             }
+
+            //foreach (var name in result)
+            //{
+            //    foreach (var character in name) //Looking at the 'name' as a sequence of chars
+            //    {
+            //        Console.WriteLine(character);
+            //    }
+            //}
+
+
+            //foreach (var car in query4.Take(10))
+            //{
+            //    Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
+            //}
 
             //if (!db.Cars.Any())
             //{
