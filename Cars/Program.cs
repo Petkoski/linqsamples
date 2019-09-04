@@ -97,6 +97,7 @@ namespace Cars
 
             //Reverse() operator - reverses the order of the items
 
+
             //CH05-07
             //Quantifiers (can tell us if anything matches a predicate, or if the data set just contains a specific item)
             //All of these operators return true/false, they do not offer deferred execution
@@ -109,7 +110,30 @@ namespace Cars
             Console.WriteLine(quan2); //True
             Console.WriteLine(quan3); //False
 
-            foreach (var car in query.Take(10))
+
+            //CH05-08
+            var query3 = from car in cars
+                         where car.Manufacturer == "BMW" && car.Year == 2016
+                         orderby car.Combined descending, car.Name ascending
+                         select car;
+
+            //Projection by using anonymous type object:
+            var anon = new
+            {
+                Name = "Jovan"
+            };
+
+            var query4 = from car in cars
+                         where car.Manufacturer == "BMW" && car.Year == 2016
+                         orderby car.Combined descending, car.Name ascending
+                         select new {
+                             car.Manufacturer,
+                             car.Name,
+                             car.Combined
+                         };
+
+
+            foreach (var car in query4.Take(10))
             {
                 Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
             }
@@ -170,15 +194,16 @@ namespace Cars
             //Skip - skips the first n items
             //Take - takes n items
 
-            //var query = File.ReadAllLines(path) //Returns string[]
-            //        .Skip(1) //Paging operation - avoid processing the header line (that contains the column names)
-            //        .Where(line => line.Length > 1) //Line must have some length
-            //        .Select(Car.ParseFromCsv);
-            //        //.ToCar();
+            var query = File.ReadAllLines(path) //Returns string[]
+                    .Skip(1) //Paging operation - avoid processing the header line (that contains the column names)
+                    .Where(line => line.Length > 1) //Line must have some length
+                    //.Select(Car.ParseFromCsv);
+                    //.Select(line => Car.ParseFromCsv(line));
+                    .ToCar(); //Transforms a string into a Car
 
-            var query = from line in File.ReadAllLines(path).Skip(1)
-                        where line.Length > 1
-                        select Car.ParseFromCsv(line);
+            //var query = from line in File.ReadAllLines(path).Skip(1)
+            //            where line.Length > 1
+            //            select Car.ParseFromCsv(line);
 
             return query.ToList();
         }
@@ -235,12 +260,14 @@ namespace Cars
 
     public static class CarExtensions
     {
+        //Extension method for IEnumerable<string> that produces IEnumerable<Car>
         public static IEnumerable<Car> ToCar(this IEnumerable<string> source)
         {
             foreach (var line in source)
             {
                 var columns = line.Split(',');
 
+                //Method that offers deferred execution (yield)
                 yield return new Car
                 {
                     Year = int.Parse(columns[0]),
